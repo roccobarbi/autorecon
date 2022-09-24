@@ -1,10 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/roccobarbi/autorecon/pkg/network"
-	"log"
 	"os"
 )
 
@@ -30,20 +28,14 @@ func main() {
 	//query := map[string]string{"q": os.Args[1], "output": "json"}
 	//req := network.JsonGetRequest{BaseUrl: baseUrl, Query: query}
 	//var req network.GetRequest = &network.JsonGetRequest{BaseUrl: baseUrl}
-	var req network.GetRequest = &network.JsonGetRequest{}
+	var req network.GetRequest[crt] = &network.JsonGetRequest[crt]{}
 	req.SetBaseUrl(baseUrl)
 	req.SetQueryKeyValue("q", os.Args[1])
 	req.SetQueryKeyValue("output", "json")
 	fmt.Println("Requesting...")
-	byteResponse := req.Request()
 	var crtArray []crt
+	crtArray = req.Request()
 	domain := make(map[string]int)
-	err := json.Unmarshal(byteResponse, &crtArray)
-	if err != nil {
-		fmt.Println("json.Unmarshal failed.")
-		fmt.Printf("%s", string(byteResponse))
-		log.Fatal(err)
-	}
 	fmt.Println("-------------------------------------------------------------------------")
 	fmt.Printf("crt.sh entries: %d\n", len(crtArray))
 	for _, element := range crtArray {

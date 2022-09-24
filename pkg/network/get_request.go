@@ -1,7 +1,7 @@
 package network
 
-type GetRequest interface {
+type GetRequest[T any] interface {
 	SetBaseUrl(string)
 	SetQueryKeyValue(string, string)
-	Request() []byte
+	Request() []T
 }
