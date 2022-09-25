@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/roccobarbi/autorecon/pkg/network"
 	"os"
+	"strings"
 )
 
 type crt struct {
@@ -39,7 +40,9 @@ func main() {
 	fmt.Println("-------------------------------------------------------------------------")
 	fmt.Printf("crt.sh entries: %d\n", len(crtArray))
 	for _, element := range crtArray {
-		domain[element.CommonName] = 1
+		for _, nameValue := range strings.Split(element.NameValue, "\n") {
+			domain[nameValue] = 1
+		}
 	}
 	fmt.Printf("%d unique domains found:\n", len(domain))
 	fmt.Println("-------------------------------------------------------------------------")
